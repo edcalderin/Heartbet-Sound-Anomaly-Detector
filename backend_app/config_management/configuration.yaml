@@ -1,4 +1,4 @@
 title: 'Hearbet Sound Anomaly Detector API'
 
-csv_name: insurance_dataset.csv
+unzipped_directory: DHD
 kaggle_dataset: mersico/dangerous-heartbeat-dataset-dhd

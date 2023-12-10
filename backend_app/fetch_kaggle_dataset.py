@@ -8,7 +8,9 @@ from kaggle.api.kaggle_api_extended import KaggleApi
 
 logging.info('authenticating...')
 
-current_directory = Path(__file__).parent
+current_directory = Path(__file__).parent.parent
+unzipped_directory = config_params['unzipped_directory']
+DATASET_DIRECTORY = current_directory.joinpath(unzipped_directory)
 
 class FetchKaggleDataset:
     
@@ -21,8 +23,7 @@ class FetchKaggleDataset:
         return api
     
     def __exists_dataset(self):
-        CSV_FILE = current_directory.joinpath(config_params['csv_name'])
-        return CSV_FILE.exists()
+        return DATASET_DIRECTORY.exists()
             
     def __fetch_from_kaggle(self):    
         try:
@@ -39,10 +40,9 @@ class FetchKaggleDataset:
             
             with ZipFile(zip_filename) as file:
                 file.extractall()
-                csv_file = file.namelist()[0]
 
             os.remove(zip_filename)
-            logging.info(f'dataset unzipped and saved in "{current_directory/csv_file}"')
+            logging.info(f'dataset unzipped and saved in "{DATASET_DIRECTORY}/"')
         
         except BadZipFile:
             logging.error('Not a zip file or a corrupted zip file')
@@ -51,8 +51,7 @@ class FetchKaggleDataset:
 
     def __call__(self):
         if self.__exists_dataset():
-            dataset_name: str = current_directory/config_params["csv_name"]
-            logging.info(f'dataset with name "{dataset_name}" already exists')
+            logging.info(f'dataset directory with name "{DATASET_DIRECTORY}" already exists')
             return
         
         self.__fetch_from_kaggle()
