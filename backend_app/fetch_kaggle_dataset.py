@@ -39,7 +39,7 @@ class FetchKaggleDataset:
             logging.info('unzipping...')
             
             with ZipFile(zip_filename) as file:
-                file.extractall()
+                file.extractall(path=config_params['unzipped_directory'])
 
             os.remove(zip_filename)
             logging.info(f'dataset unzipped and saved in "{DATASET_DIRECTORY}/"')

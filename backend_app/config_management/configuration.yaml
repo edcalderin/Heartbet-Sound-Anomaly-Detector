@@ -1,4 +1,4 @@
 title: 'Hearbet Sound Anomaly Detector API'
 
-unzipped_directory: DHD
-kaggle_dataset: mersico/dangerous-heartbeat-dataset-dhd
+unzipped_directory: unzipped_data
+kaggle_dataset: kinguistics/heartbeat-sounds
