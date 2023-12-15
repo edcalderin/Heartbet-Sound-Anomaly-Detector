@@ -17,7 +17,6 @@ torchaudio = { version = "2.1.1", extras = ["cpu"]}
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.27.1"
 pandas = "^2.1.4"
-seaborn = "^0.13.0"
 matplotlib = "3.7.3"
 
 [build-system]
