@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "heartbet-sound-anomaly-detector"
-version = "1.0.0"
+version = "0.1.0"
 description = ""
 authors = ["Erick <erick@example.com>"]
 readme = "README.md"
@@ -12,6 +12,7 @@ fastapi = "^0.104.1"
 kaggle = "^1.5.16"
 numpy = "^1.26.2"
 librosa = "^0.10.1"
+torchaudio = { version = "2.1.1", extras = ["cpu"]}
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.27.1"
