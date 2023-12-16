@@ -13,6 +13,7 @@ kaggle = "^1.5.16"
 numpy = "^1.26.2"
 librosa = "^0.10.1"
 torchaudio = { version = "2.1.1", extras = ["cpu"]}
+seaborn = "^0.13.0"
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.27.1"
