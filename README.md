@@ -162,7 +162,7 @@ Replace `<kaggle_username>` and `<kaggle_key>` with your Kaggle credentials. It 
 
 1. Navigate to the frontend application directory: `cd frontend_streamlit`
 2. `eb init` (Same steps as backend app)
-3. Then: 
+3. Then:  
 
 ```bash
 eb create medical-insurance-charges-frontend-env --envvars ENDPOINT_URL=<endpoint_url>
@@ -176,7 +176,7 @@ As a result, you will be able to see the applications running on AWS cloud:
 * Frontend: http://medical-insurance-charges-frontend-env.eba-gqxzgsm2.us-east-2.elasticbeanstalk.com/
 
 > [!WARNING]
-> After capstone 1 deadline, the cloud service will no longer be accessible.
+> After capstone 2 deadline, the cloud service will no longer be accessible.
 
 ## Checkpoints
 
@@ -196,4 +196,5 @@ As a result, you will be able to see the applications running on AWS cloud:
 
 ## References
 
-* [Dataset] https://www.kaggle.com/datasets/mersico/dangerous-heartbeat-dataset-dhd
+* [Dataset] https://www.kaggle.com/datasets/kinguistics/heartbeat-sounds
+* https://pytorch.org/audio
