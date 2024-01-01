@@ -198,3 +198,4 @@ As a result, you will be able to see the applications running on AWS cloud:
 
 * [Dataset] https://www.kaggle.com/datasets/kinguistics/heartbeat-sounds
 * https://pytorch.org/audio
+* https://medium.com/@muhammad2000ammar/mastering-transfer-learning-with-pytorch-d1521f3a6a6e
