@@ -5,6 +5,9 @@ import torch
 from torchmetrics import Accuracy
 from torch.utils.data import DataLoader
 import logging
+from config_management.logger import get_logger
+
+logger = get_logger(module_name = 'training', logger_level = logging.INFO, log_location = 'logs')
 
 class HearbetDetectorTrainer:
 
@@ -74,7 +77,7 @@ class HearbetDetectorTrainer:
             training_set,
             validation_set) -> Dict[str, List]:
 
-        logging.info('Training on', self.__device)
+        logger.info(f'Training on {self.__device}')
 
         train_loader = DataLoader(training_set, batch_size = batch_size, shuffle = True)
         val_loader = DataLoader(validation_set, batch_size = batch_size)
@@ -102,7 +105,7 @@ class HearbetDetectorTrainer:
             report_dict['val_loss'].append(val_loss)
             report_dict['val_precision'].append(val_accuracy)
 
-            logging.info('Epoch: {} | Loss: {:.4f} - Accuracy: {:.4f} - Val loss: {:.4f} - Val accuracy: {:.4f}'
+            logger.info('Epoch: {} | Loss: {:.4f} - Accuracy: {:.4f} - Val loss: {:.4f} - Val accuracy: {:.4f}'
                   .format(epoch + 1, train_loss, train_accuracy, val_loss, val_accuracy))
 
         return report_dict

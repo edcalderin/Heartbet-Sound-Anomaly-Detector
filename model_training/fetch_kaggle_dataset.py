@@ -3,10 +3,13 @@ import os
 from pathlib import Path
 from zipfile import BadZipFile, ZipFile
 
-from backend_app.config_management.config_reader import config_params
+from config_management.config_reader import config_params
 from kaggle.api.kaggle_api_extended import KaggleApi
+from config_management.logger import get_logger
 
-logging.info('authenticating...')
+logger = get_logger(module_name = 'fetch-dataset', logger_level = logging.INFO, log_location = 'logs')
+
+logger.info('authenticating...')
 
 current_directory = Path(__file__).parent.parent
 unzipped_directory = config_params['unzipped_directory']
@@ -29,29 +32,29 @@ class FetchKaggleDataset:
         try:
             kaggle_dataset: str = config_params['kaggle_dataset']
 
-            logging.info(f'downloading dataset "{kaggle_dataset}" from Kaggle')
+            logger.info(f'downloading dataset "{kaggle_dataset}" from Kaggle')
 
             self.api.dataset_download_files(kaggle_dataset)
             
             zip_filename = Path(kaggle_dataset).name
             zip_filename = f'{zip_filename}.zip'
         
-            logging.info('unzipping...')
-            
+            logger.info('unzipping...')
+
             with ZipFile(zip_filename) as file:
                 file.extractall(path=config_params['unzipped_directory'])
 
             os.remove(zip_filename)
-            logging.info(f'dataset unzipped and saved in "{DATASET_DIRECTORY}/"')
-        
+            logger.info(f'dataset unzipped and saved in "{DATASET_DIRECTORY}/"')
+
         except BadZipFile:
-            logging.error('Not a zip file or a corrupted zip file')
+            logger.error('Not a zip file or a corrupted zip file')
         except Exception as e:
-            logging.error(f'Unexpected error {e}')
+            logger.error(f'Unexpected error {e}')
 
     def __call__(self):
         if self.__exists_dataset():
-            logging.info(f'dataset directory with name "{DATASET_DIRECTORY}" already exists')
+            logger.info(f'dataset directory with name "{DATASET_DIRECTORY}" already exists')
             return
 
         self.__fetch_from_kaggle()

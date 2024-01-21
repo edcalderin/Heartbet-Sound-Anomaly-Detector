@@ -1,4 +1,3 @@
-from pathlib import Path
 from typing import Any, Dict, Tuple
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -11,20 +10,20 @@ from model_training.architecture import PreTrainedNetwork
 from model_training.datasets import AudioDataset, AudioDatasetWithAugmentation
 from model_training.hearbet_detector_trainer import HearbetDetectorTrainer
 from model_training.preprocessing import Preprocessing
-import logging
 from pydantic import BaseModel
+import logging
+from config_management.logger import get_logger
 
-logging.info(torch.__version__)
+logger = get_logger(module_name = 'main-module', logger_level = logging.INFO, log_location = 'logs')
 
-logging.info(torch.cuda.is_available())
+logger.info(f'PyTorch version: {torch.__version__}')
 
 SEED: int = 42
 AUDIO_LENGTH: int = 10
 TARGET_SAMPLE_RATE: int = 4000
-AUDIO_DIR = Path('../unzipped_data/')
-
-LEARNING_RATE: float = 0.0001
-EPOCHS: int = 10
+AUDIO_DIR: str = 'unzipped_data'
+LEARNING_RATE: float = 0.05
+EPOCHS: int = 5
 BATCH_SIZE: int = 32
 
 params: Dict = {
@@ -44,8 +43,8 @@ class Train(BaseModel):
     saved_model_dir: str
     data_dir: str
 
-    def __create_datasets(self, dataframe: pd.DataFrame)-> Tuple[pd.DataFrame, pd.DataFrame]:
-        logging.info('Creating datasets')
+    def __create_datasets(self, dataframe: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
+        logger.info('Creating pytorch datasets')
 
         train_dataset_df, test_dataset_df = train_test_split(
             dataframe,
@@ -81,6 +80,7 @@ class Train(BaseModel):
 
         pretrained_model = PreTrainedNetwork(model_name = self.pretrained_model_name, num_classes = 1)
         pretrained_model = pretrained_model.to(device)
+
         loss_function = nn.BCEWithLogitsLoss()
         optimizer = torch.optim.SGD(params = pretrained_model.parameters(), lr = LEARNING_RATE, momentum = 0.9)
         scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size = 10, gamma = 0.1)
@@ -103,5 +103,5 @@ class Train(BaseModel):
 if __name__ == '__main__':
     train_model = Train(saved_model_dir = 'pth_models',
                         pretrained_model_name = 'tf_efficientnet_b3.ns_jft_in1k',
-                        data_dir = 'unzipped_data')
+                        data_dir = AUDIO_DIR)
     train_model()

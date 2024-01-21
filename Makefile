@@ -1,5 +1,8 @@
 include .env
 export
 
-fetch-dataset:
-	python -m backend_app.fetch_kaggle_dataset
+fetch_dataset:
+	python -m model_training.fetch_kaggle_dataset
+
+train: fetch_dataset
+	python -m model_training
