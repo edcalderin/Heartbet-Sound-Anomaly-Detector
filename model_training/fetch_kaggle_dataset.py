@@ -13,7 +13,7 @@ unzipped_directory = config_params['unzipped_directory']
 DATASET_DIRECTORY = current_directory.joinpath(unzipped_directory)
 
 class FetchKaggleDataset:
-    
+
     def __init__(self) -> None:
         self.api = self.__auth()
 
@@ -21,16 +21,16 @@ class FetchKaggleDataset:
         api = KaggleApi()
         api.authenticate()
         return api
-    
-    def __exists_dataset(self):
+
+    def __exists_dataset(self) -> bool:
         return DATASET_DIRECTORY.exists()
-            
-    def __fetch_from_kaggle(self):    
+
+    def __fetch_from_kaggle(self) -> None:
         try:
             kaggle_dataset: str = config_params['kaggle_dataset']
-            
+
             logging.info(f'downloading dataset "{kaggle_dataset}" from Kaggle')
-            
+
             self.api.dataset_download_files(kaggle_dataset)
             
             zip_filename = Path(kaggle_dataset).name
@@ -53,9 +53,9 @@ class FetchKaggleDataset:
         if self.__exists_dataset():
             logging.info(f'dataset directory with name "{DATASET_DIRECTORY}" already exists')
             return
-        
+
         self.__fetch_from_kaggle()
-        
+
 if __name__ == '__main__':
     fetcher = FetchKaggleDataset()
     fetcher()

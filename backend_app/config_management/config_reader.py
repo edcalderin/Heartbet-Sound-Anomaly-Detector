@@ -14,7 +14,7 @@ class ConfigReader:
         try:
             with open(path) as file:
                 return yaml.load(file, Loader=SafeLoader)
-            
+
         except yaml.YAMLError as e:
             logging.error(f'Invalid yaml file or corrupted yaml file: {e}')
             sys.exit()
