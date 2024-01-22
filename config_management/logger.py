@@ -2,7 +2,6 @@ from datetime import datetime
 import logging
 from logging import handlers
 from pathlib import Path
-import sys
 
 def get_logger(
     module_name: str,
@@ -15,15 +14,13 @@ def get_logger(
 
     Parameters:
     ----------
-    - app_name: name of the application or floe that is running
+    - module_name: name of the application or floe that is running
     - logger_level: logger level - CRITICAL=50, ERROR=40, WARNING=30, INFO=20, DEBUG=10, NOTSET=0
     '''
-    #existing_logger = logging.getLogger(module_name)
-    #if existing_logger.handlers:
-    #    # Logger already configured, return the existing logger
-    #    return existing_logger
 
-    log_save = Path(log_location).joinpath(f'{datetime.now().strftime(log_format)}_{module_name}.log')
+    log_path: Path = Path(log_location)
+    log_path.mkdir(exist_ok = True)
+    log_save = log_path.joinpath(f'{datetime.now().strftime(log_format)}_{module_name}.log')
 
     logger = None
     try:
