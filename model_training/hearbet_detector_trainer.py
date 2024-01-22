@@ -26,8 +26,9 @@ class HearbetDetectorTrainer:
     def __inner_loop(self, specs, labels, loss_fn: nn.Module, is_train: bool) -> Tuple:
 
         specs, labels = specs.to(self.__device), labels.float().to(self.__device)
-        outputs = self.__model(specs).squeeze()
-        loss = loss_fn(outputs, labels.squeeze())
+        outputs = self.__model(specs)
+        outputs = torch.sigmoid(outputs).squeeze()
+        loss = loss_fn(outputs, labels)
         loss_value = loss.item()
 
         if is_train:

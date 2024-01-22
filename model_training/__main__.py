@@ -26,7 +26,7 @@ AUDIO_LENGTH: int = 10
 TARGET_SAMPLE_RATE: int = 4000
 AUDIO_DIR: str = 'unzipped_data'
 LEARNING_RATE: float = 0.05
-EPOCHS: int = 5
+EPOCHS: int = 7
 BATCH_SIZE: int = 32
 
 params: Dict = {
