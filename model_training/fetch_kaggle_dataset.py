@@ -4,10 +4,11 @@ from pathlib import Path
 from zipfile import BadZipFile, ZipFile
 
 from config_management.config_reader import config_params
-from kaggle.api.kaggle_api_extended import KaggleApi
 from config_management.logger import get_logger
+from kaggle.api.kaggle_api_extended import KaggleApi
 
-logger = get_logger(module_name = 'fetch-dataset', logger_level = logging.INFO, log_location = 'logs')
+logger = get_logger(
+    module_name = 'fetch-dataset', logger_level = logging.INFO, log_location = 'logs')
 
 logger.info('authenticating...')
 
@@ -35,10 +36,10 @@ class FetchKaggleDataset:
             logger.info(f'downloading dataset "{kaggle_dataset}" from Kaggle')
 
             self.api.dataset_download_files(kaggle_dataset)
-            
+
             zip_filename = Path(kaggle_dataset).name
             zip_filename = f'{zip_filename}.zip'
-        
+
             logger.info('unzipping...')
 
             with ZipFile(zip_filename) as file:
@@ -54,7 +55,8 @@ class FetchKaggleDataset:
 
     def __call__(self):
         if self.__exists_dataset():
-            logger.info(f'dataset directory with name "{DATASET_DIRECTORY}" already exists')
+            logger.info(
+                f'dataset directory with name "{DATASET_DIRECTORY}" already exists')
             return
 
         self.__fetch_from_kaggle()

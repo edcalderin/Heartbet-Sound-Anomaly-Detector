@@ -1,13 +1,15 @@
+import logging
 from pathlib import Path
 from typing import Callable, Dict, List, Tuple
-from torch import nn
-import torch
-from torchmetrics import Accuracy
-from torch.utils.data import DataLoader
-import logging
-from config_management.logger import get_logger
 
-logger = get_logger(module_name = 'training', logger_level = logging.INFO, log_location = 'logs')
+import torch
+from config_management.logger import get_logger
+from torch import nn
+from torch.utils.data import DataLoader
+from torchmetrics import Accuracy
+
+logger = get_logger(
+    module_name = 'training', logger_level = logging.INFO, log_location = 'logs')
 
 class HearbetDetectorTrainer:
 
@@ -21,10 +23,11 @@ class HearbetDetectorTrainer:
         self.__model = model.to(device)
         self.__model_dir = model_dir
 
-    def __inner_loop(self, specs, labels, loss_function: torch.nn.Module, is_train: bool) -> Tuple:
+    def __inner_loop(self, specs, labels, loss_fn: nn.Module, is_train: bool) -> Tuple:
+
         specs, labels = specs.to(self.__device), labels.float().to(self.__device)
         outputs = self.__model(specs).squeeze()
-        loss = loss_function(outputs, labels.squeeze())
+        loss = loss_fn(outputs, labels.squeeze())
         loss_value = loss.item()
 
         if is_train:
@@ -34,7 +37,7 @@ class HearbetDetectorTrainer:
 
     def __train_step(self,
                      optimizer: torch.optim.Optimizer,
-                     train_loader: torch.utils.data.DataLoader,
+                     train_loader: DataLoader,
                      loss_function: torch.nn.Module,
                      scheduler) -> Tuple[float, float]:
 
@@ -43,7 +46,8 @@ class HearbetDetectorTrainer:
         self.__model.train()
         for specs, labels in train_loader:
             optimizer.zero_grad()
-            loss_value, accuracy_value = self.__inner_loop(specs, labels, loss_function, is_train = True)
+            loss_value, accuracy_value = self.__inner_loop(
+                specs, labels, loss_function, is_train = True)
             train_loss += loss_value
             train_accuracy += accuracy_value
             optimizer.step()
@@ -52,21 +56,27 @@ class HearbetDetectorTrainer:
 
         length_train_loader = len(train_loader)
 
-        return train_loss/length_train_loader, train_accuracy/length_train_loader
+        return (round(train_loss/length_train_loader, 4),
+                round(train_accuracy/length_train_loader, 4))
 
-    def __test_step(self, val_loader: torch.utils.data.DataLoader, loss_function: torch.nn.Module) -> Tuple[float, float]:
+    def __test_step(self,
+                    val_loader: DataLoader,
+                    loss_function: nn.Module) -> Tuple[float, float]:
+
         val_accuracy, val_loss = 0, 0
 
         self.__model.eval()
         with torch.inference_mode():
             for specs, labels in val_loader:
-                loss_value, accuracy_value = self.__inner_loop(specs, labels, loss_function, is_train = False)
+                loss_value, accuracy_value = self.__inner_loop(
+                    specs, labels, loss_function, is_train = False)
                 val_loss += loss_value
                 val_accuracy += accuracy_value
 
         length_val_loader = len(val_loader)
 
-        return val_loss/length_val_loader, val_accuracy/length_val_loader
+        return (round(val_loss/length_val_loader, 4),
+                round(val_accuracy/length_val_loader, 4))
 
     def fit(self,
             loss_function: nn.Module,
@@ -90,10 +100,12 @@ class HearbetDetectorTrainer:
         }
 
         for epoch in range(epochs):
-            train_loss, train_accuracy = self.__train_step(optimizer, train_loader, loss_function, scheduler)
-            val_loss, val_accuracy = self.__test_step(val_loader, loss_function)
+            train_loss, train_acc = self.__train_step(
+                optimizer, train_loader, loss_function, scheduler)
 
-            model_name: str = f'epoch_{epoch}_acc={train_accuracy:.4f}_val_acc={val_accuracy:.4f}.pth'
+            val_loss, val_acc = self.__test_step(val_loader, loss_function)
+
+            model_name: str = f'epoch_{epoch}_acc={train_acc}_val_acc={val_acc}.pth'
             model_path = Path(self.__model_dir)
             model_path.mkdir(exist_ok = True)
             torch.save(self.__model.cpu().state_dict(), model_path.joinpath(model_name))
@@ -101,11 +113,12 @@ class HearbetDetectorTrainer:
             self.__model.to(self.__device)
 
             report_dict['loss'].append(train_loss)
-            report_dict['precision'].append(train_accuracy)
+            report_dict['precision'].append(train_acc)
             report_dict['val_loss'].append(val_loss)
-            report_dict['val_precision'].append(val_accuracy)
+            report_dict['val_precision'].append(val_acc)
 
-            logger.info('Epoch: {} | Loss: {:.4f} - Accuracy: {:.4f} - Val loss: {:.4f} - Val accuracy: {:.4f}'
-                  .format(epoch + 1, train_loss, train_accuracy, val_loss, val_accuracy))
+            logger.info(
+                'Epoch: {} | Loss: {} - Accuracy: {} - Val loss: {} - Val accuracy: {}'
+                .format(epoch + 1, train_loss, train_acc, val_loss, val_acc))
 
         return report_dict

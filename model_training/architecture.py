@@ -1,6 +1,7 @@
 import timm
 from torch import nn
 
+
 class PreTrainedNetwork(nn.Module):
     def __init__(self, model_name: str, num_classes: int) -> None:
         super().__init__()
