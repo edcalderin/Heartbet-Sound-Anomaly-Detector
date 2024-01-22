@@ -2,7 +2,7 @@
 unzipped_data/
 
 # Models
-*.pth
+notebooks/**/*.pth
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
