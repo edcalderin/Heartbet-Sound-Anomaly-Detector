@@ -17,9 +17,9 @@ class ConfigReader:
 
         except yaml.YAMLError as e:
             logger.error(f'Invalid or corrupted yaml file: {e}')
-            sys.exit()
+            exit(-1)
         except Exception as e:
             logger.error(f'Error by reading yaml file: {e}')
-            sys.exit()
+            exit(-1)
 
 config_params = ConfigReader.read_params(current_directory.joinpath('configuration.yaml'))

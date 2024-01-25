@@ -1,9 +1,0 @@
-model_name: pth_models/epoch_4_acc=0.8416_val_acc=0.7614.pth
-audio_length: 10
-target_sample_rate: 4000
-threshold: 0.5
-
-melspectrogram:
-  n_fft: 128
-  n_mels: 128
-  hop_length: 128

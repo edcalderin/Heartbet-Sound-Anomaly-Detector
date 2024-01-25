@@ -3,15 +3,15 @@ from fastapi import FastAPI, UploadFile
 from backend_app.model_handler import ModelHandler
 from backend_app.utils import Utils
 import uvicorn
-import logging
+from config_management.logger import get_logger
 
-logging.basicConfig(level = logging.INFO, format = '%(asctime)s %(levelname)s %(message)s')
+logger = get_logger(module_name = 'main')
 
 resources = dict()
 
 @asynccontextmanager
 async def app_life_span(_: FastAPI):
-    logging.info('Loading model...')
+    logger.info('Loading model...')
     resources['model'] = Utils.load_model()
     yield
     resources.clear()
