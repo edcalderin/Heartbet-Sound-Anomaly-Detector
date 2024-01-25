@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "frontend-app"
+version = "0.1.0"
+description = "Frontend application with Streamlit"
+authors = ["Erick Calderin"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+streamlit = "^1.30.0"
+requests = "^2.31.0"
+plotly = "^5.18.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

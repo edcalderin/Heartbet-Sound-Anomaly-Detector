@@ -49,9 +49,9 @@ class ModelHandler:
         threshold: float = self._config['threshold']
 
         if x >= threshold:
-            return {'label': 'abnormal', 'prob': x}
+            return {'abnormal': x, 'normal': 1 - x}
         else:
-            return {'label': 'normal', 'prob': 1 - x}
+            return {'abnormal': 1 - x, 'normal': x}
 
     def __call__(self):
         x = self._preprocess()
