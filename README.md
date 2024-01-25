@@ -1,13 +1,6 @@
 # Heartbet Sound Anomaly Detector
 
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-
 *Machine Learning Zoomcap Capstone 2 project*
-
-![Alt text](./images/cover.webp)
-<p align="center">
-  <i>Image credits: <a href='https://www.forbes.com/advisor/health-insurance/how-much-does-health-insurance-cost/'>Forbes article</a></i>
-</p>
 
 ## Table of Contents
 
