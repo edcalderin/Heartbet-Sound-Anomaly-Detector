@@ -8,6 +8,7 @@
 * [Problem statement](#problem-statement)
 * [Directory layout](#directory-layout)
 * [Setup](#setup)
+* [Training model](#training-model)
 * [Running the app with Docker (Recommended)](#running-the-app-with-docker-recommended)
     * [Streamlit UI](#streamlit-ui)
     * [Backend service](#backend-service)
@@ -60,7 +61,11 @@ By leveraging this innovative solution, individuals can proactively monitor thei
 
 ## Training model
 
-* Create a conda environment: `conda create -n <name-of-env> python=3.10`
+This project already provides a trained model in `/pth_models` directory to deploy the application, but if you wish generate new models, then follow the next steps.
+
+Take into account it will take several minutes even with an available gpu:
+
+* Create a conda environment: `conda create -n <name-of-env> python=3.11`
 * Start environment: `conda activate <name-of-env>` or `source activate <name-of-env>`
 
 * Install pytorch dependencies:  
@@ -74,9 +79,27 @@ __With CPU__:
 * Install rest of dependencies:  
 `pip install kaggle pandas numpy seaborn pyyaml numpy matplotlib ipykernel librosa`
 * Run `make train`
-* The models will be saved to `pth_models` directory
+* The models will be saved to `/pth_models` directory with the following pattern:
+`epoch_{epoch}_acc={accuracy in training}_val_acc={accuracy in validation}.pth`
 
-This same environment can be used to run the notebooks in `notebooks/` directory
+You will see different models per epoch, you must choose one of them afterwards and set it in the configuration file.
+
+```yaml
+title: 'Hearbet Sound Anomaly Detector API'
+
+unzipped_directory: unzipped_data
+kaggle_dataset: kinguistics/heartbeat-sounds
+
+model_name: pth_models/epoch_4_acc=0.8416_val_acc=0.7614.pth ## Replace for the new model
+audio_length: 10
+target_sample_rate: 4000
+threshold: 0.5
+
+melspectrogram:
+  n_fft: 128
+  n_mels: 128
+  hop_length: 128
+```
 
 ## Running the app with Docker (Recommended)
 
@@ -87,13 +110,13 @@ Run `docker-compose up --build` to start the services at first time or `docker-c
 
 The output should look like this:
 
-![Alt text](./images/docker_output.png)
+![Alt text](./images/docker-output.png)
 
 * ### Streamlit UI
 
 User interface designed using Streamlit to interact with backend endpoints:
 
-![Alt text](./images/streamlit-ui.png)
+![Alt text](./images/streamlit.png)
 
 * ### Backend service
 
@@ -101,11 +124,16 @@ Swagger documentation for FastAPI backend:
 
 ![Alt text](./images/swagger.png)
 
+### Testing the app
+
+If you did not train any model, then run `make fetch_dataset` to download the dataset from Kaggle website and test the prediction endpoint.
+
 * Stop the services with `docker-compose down`
 
 ## Notebooks
 
-Run notebooks in `notebooks/` directory to conduct Exploratory Data Analysis.
+Run notebooks in `notebooks/` directory to conduct Exploratory Data Analysis and model training.
+The environment created in [Training model](#training-model) section can be also used to run the notebooks.
 
 ## Application running on Cloud
 
@@ -123,7 +151,7 @@ The application has been deployed to cloud using AWS ElasticBeanstalk, both fron
 - [x] Model deployment
 - [x] Dependency and enviroment management
 - [x] Containerization
-- [x] Cloud deployment (master)
+- [x] Cloud deployment
 - [ ] Linter
 - [ ] CI/CD workflow
 - [ ] Pipeline orchestration
