@@ -46,12 +46,7 @@ class ModelHandler:
         return torch.sigmoid(output).item()
 
     def _postprocess(self, x: float) -> Dict:
-        threshold: float = self._config['threshold']
-
-        if x >= threshold:
-            return {'abnormal': x, 'normal': 1 - x}
-        else:
-            return {'abnormal': 1 - x, 'normal': x}
+        return {'abnormal': x, 'normal': 1 - x}
 
     def __call__(self):
         x = self._preprocess()
