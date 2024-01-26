@@ -38,6 +38,7 @@ By leveraging this innovative solution, individuals can proactively monitor thei
 ├── frontend_app            # Directory with files to create Streamlit UI application
 ├── images                  # Assets
 ├── model_pipeline          # Files to preprocess and train the model
+|── pth_models              # Trained models
 └── notebooks               # Notebooks used to explore data and select the best model
 
 6 directories
