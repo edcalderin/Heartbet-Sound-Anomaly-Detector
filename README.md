@@ -16,6 +16,7 @@
     * [Testing the app](#testing-the-app)
 * [Running with Kubernetes](#running-with-kubernetes)
 * [Application running on Cloud](#application-running-on-cloud)
+* [Architecture](#architecture)
 * [Checkpoints](#checkpoints)
 * [References](#references)
 <!--te-->
@@ -132,6 +133,10 @@ Assuming you have `kind` tool installed on your system, follow the instructions 
 ![Alt text](./images/awseb.png)
 
 The application has been deployed to cloud using AWS ElasticBeanstalk, both frontend and backend were separately deployed using `eb` command:
+
+## Architecture
+
+![Alt text](./images/architecture.png)
 
 ## Checkpoints
 
