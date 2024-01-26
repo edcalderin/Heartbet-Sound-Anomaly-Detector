@@ -115,7 +115,7 @@ The output should look like this:
 
 User interface designed using Streamlit to interact with backend endpoints:
 
-![Alt text](./images/streamlit.png)
+![Alt text](./images/streamlit_app.png)
 
 ### Testing the app
 
