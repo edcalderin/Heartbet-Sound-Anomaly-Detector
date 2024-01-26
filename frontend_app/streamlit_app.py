@@ -16,10 +16,8 @@ def process_data(file) -> Tuple:
 def main():
     st.title('Heartbeat Anomaly Detector')
 
-    # Create two columns
     left_column, right_column = st.columns(2)
 
-    # Left column: File upload and predict button
     with left_column:
         uploaded_file = st.file_uploader("Choose a file", type=["wav"])
 
@@ -32,11 +30,12 @@ def main():
 
             st.text('Prediction complete!')
 
-    # Right column: Plots
     with right_column:
         if 'normal_value' in locals() and 'abnormal_value' in locals():
-            fig = px.bar(x=['Normal', 'Abnormal'], y=[normal_value, abnormal_value], labels={'y': 'Values'},
-                         title='Heartbeat Predictions')
+            fig = px.bar(x = ['Normal', 'Abnormal'], 
+                         y = [normal_value, abnormal_value],
+                         labels = {'x': 'Anomaly', 'y': 'Probability'},
+                         title = 'Heartbeat Predictions')
             st.plotly_chart(fig)
 
 if __name__ == '__main__':
