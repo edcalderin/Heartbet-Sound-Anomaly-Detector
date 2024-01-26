@@ -9,11 +9,12 @@
 * [Directory layout](#directory-layout)
 * [Setup](#setup)
 * [Training model](#training-model)
+* [Notebooks](#notebooks)
 * [Running the app with Docker (Recommended)](#running-the-app-with-docker-recommended)
     * [Streamlit UI](#streamlit-ui)
     * [Backend service](#backend-service)
     * [Testing the app](#testing-the-app)
-* [Notebooks](#notebooks)
+* [Running with Kubernetes](#running-with-kubernetes)
 * [Application running on Cloud](#application-running-on-cloud)
 * [Checkpoints](#checkpoints)
 * [References](#references)
@@ -95,6 +96,10 @@ model_name: pth_models/epoch_4_acc=0.8416_val_acc=0.7614.pth ## Replace for the 
 ```
 You are free to consciously manipulate this configuration file with different parameters.
 
+## Notebooks
+
+Run notebooks in `notebooks/` directory to conduct Exploratory Data Analysis and model training. The environment created in previous section can be also used here.
+
 ## Running the app with Docker (Recommended)
 
 Run `docker-compose up --build` to start the services at first time or `docker-compose up` to start services after the initial build
@@ -106,17 +111,11 @@ The output should look like this:
 
 ![Alt text](./images/docker-output.png)
 
-* ### Streamlit UI
+### Streamlit UI
 
 User interface designed using Streamlit to interact with backend endpoints:
 
 ![Alt text](./images/streamlit.png)
-
-* ### Backend service
-
-Swagger documentation for FastAPI backend:
-
-![Alt text](./images/swagger.png)
 
 ### Testing the app
 
@@ -124,10 +123,9 @@ If you did not train any model, then run `make fetch_dataset` to download the da
 
 * Stop the services with `docker-compose down`
 
-## Notebooks
+## Running with Kubernetes
 
-Run notebooks in `notebooks/` directory to conduct Exploratory Data Analysis and model training.
-The environment created in [Training model](#training-model) section can be also used to run the notebooks.
+Assuming you have `kind` tool installed on your system, follow the instructions on [kube_instructions.md](instructions/kube_instructions.md)
 
 ## Application running on Cloud
 
