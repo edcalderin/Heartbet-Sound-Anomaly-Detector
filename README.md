@@ -12,9 +12,7 @@
 * [Running the app with Docker (Recommended)](#running-the-app-with-docker-recommended)
     * [Streamlit UI](#streamlit-ui)
     * [Backend service](#backend-service)
-* [Running the app manually](#running-the-app-manually)
-    * [Backend service](#backend-service-1)
-    * [Streamlit UI](#streamlit-ui-1)
+    * [Testing the app](#testing-the-app)
 * [Notebooks](#notebooks)
 * [Application running on Cloud](#application-running-on-cloud)
 * [Checkpoints](#checkpoints)
@@ -41,7 +39,7 @@ By leveraging this innovative solution, individuals can proactively monitor thei
 |── pth_models              # Trained models
 └── notebooks               # Notebooks used to explore data and select the best model
 
-6 directories
+7 directories
 ```
 
 ## Setup
@@ -83,7 +81,7 @@ __With CPU__:
 * The models will be saved to `/pth_models` directory with the following pattern:
 `epoch_{epoch}_acc={accuracy in training}_val_acc={accuracy in validation}.pth`
 
-You will see different models per epoch, you must choose one of them afterwards and set it in the configuration file.
+You will see different models per epoch, you must choose one of them afterwards and set it in the configuration file. The `model_name` property:
 
 ```yaml
 title: 'Hearbet Sound Anomaly Detector API'
@@ -92,15 +90,10 @@ unzipped_directory: unzipped_data
 kaggle_dataset: kinguistics/heartbeat-sounds
 
 model_name: pth_models/epoch_4_acc=0.8416_val_acc=0.7614.pth ## Replace for the new model
-audio_length: 10
-target_sample_rate: 4000
-threshold: 0.5
 
-melspectrogram:
-  n_fft: 128
-  n_mels: 128
-  hop_length: 128
+...
 ```
+You are free to consciously manipulate this configuration file with different parameters.
 
 ## Running the app with Docker (Recommended)
 
